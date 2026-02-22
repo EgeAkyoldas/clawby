@@ -1,0 +1,26 @@
+name: Daily Heartbeat
+
+on:
+  schedule:
+    # Every day at 05:00 UTC = 08:00 Turkey time (UTC+3)
+    - cron: '0 5 * * *'
+  workflow_dispatch: # Manual trigger for testing
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Heartbeat via Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          MESSAGE="🌅 *Good morning\!*
+
+          1️⃣ What is your \#1 priority today?
+          2️⃣ Any blocker I should help remove?"
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="${MESSAGE}" \
+            -d parse_mode="MarkdownV2"
