@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+*.db
+*.sqlite
+memory/memories.json
+memory/memory_log.md
